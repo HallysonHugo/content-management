@@ -1,13 +1,12 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-} */
+.transition-max-height {
+    max-height: 0; /* max-height = 0 to ensure it's hidden initially */
+    transition: max-height 0.5s ease-in-out;
+  }
+  
+  .max-h-96 {
+    max-height: 96rem;
+}

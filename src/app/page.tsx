@@ -1,16 +1,23 @@
 "use client";
 import React, { ChangeEvent, useState } from 'react';
+//import css
+import './home.css'
 
 
 // Define the type of the json data
 type JsonData = { [key: string]: any };
+
 
 const Page = () => {
 
   // Create a state to store the json data
   const [jsonData, setJsonData] = useState<JsonData>({});
   const [originalJsonData, setOriginalJsonData] = useState<JsonData>({});
+  const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
+  const toggleExpansion = (key: string) => {
+    setExpandedKey(expandedKey === key ? null : key);
+  };
   // Handle the file change event
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -35,6 +42,35 @@ const Page = () => {
         {Object.keys(jsonData).map((key) => {
           const value = jsonData[key];
           const isChanged = value !== originalJsonData[key];
+          // Check if the value is an object to render it as a nested object or as a simple input
+          if(typeof value === 'object'){
+            return (
+              <div>
+                <div>
+                <h2 className="font-bold cursor-pointer" onClick={() => toggleExpansion(key)}>
+                  {key}:
+                </h2>
+                </div>
+                <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+                    expandedKey === key ? 'max-h-96' : 'max-h-0'
+                  }`}> 
+                {Object.keys(value).map((subKey) => (
+                  <div key={subKey} className="flex flex-wrap justify-center">
+                    <h3 className="font-bold">{subKey + ":"}</h3>
+                    <input className="text-black border-2 border-gray-300 rounded-lg w-1/2 p-2 m-2"
+                      type="text"
+                      value={jsonData[key][subKey]}
+                      onChange={(e) => setJsonData({ ...jsonData, [key]: { ...jsonData[key], [subKey]: e.target.value } })}
+                    />
+                    {isChanged ? (
+                      <span className="text-red-500 font-bold">Modified</span>
+                    ) : null }
+                  </div>
+                ))}
+                </div>
+              </div>
+            )
+          }
           return (<div key={key} className="flex flex-wrap justify-center">
             <h2 className="font-bold">{key + ":"}</h2>
             <input className="text-black border-2 border-gray-300 rounded-lg w-1/2 p-2 m-2"
