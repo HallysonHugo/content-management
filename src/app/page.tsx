@@ -40,12 +40,11 @@ const Page = () => {
       <input type="file" accept=".json" onChange={handleFileChange} />
       <div>
         {Object.keys(jsonData).map((key) => {
-          const value = jsonData[key];
-          const isChanged = value !== originalJsonData[key];
+          const isChanged = jsonData[key] !== originalJsonData[key];
           // Check if the value is an object to render it as a nested object or as a simple input
-          if(typeof value === 'object'){
+          if(typeof jsonData[key] === 'object'){
             return (
-              <div>
+              <div key={key}>
                 <div>
                 <h2 className="font-bold cursor-pointer" onClick={() => toggleExpansion(key)}>
                   {key}:
@@ -54,7 +53,7 @@ const Page = () => {
                 <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
                     expandedKey === key ? 'max-h-96' : 'max-h-0'
                   }`}> 
-                {Object.keys(value).map((subKey) => (
+                {Object.keys(jsonData[key]).map((subKey) => (
                   <div key={subKey} className="flex flex-wrap justify-center">
                     <h3 className="font-bold">{subKey + ":"}</h3>
                     <input className="text-black border-2 border-gray-300 rounded-lg w-1/2 p-2 m-2"
@@ -71,7 +70,8 @@ const Page = () => {
               </div>
             )
           }
-          return (<div key={key} className="flex flex-wrap justify-center">
+          // return (<div key={key}>
+          return (<div key={key} className="flex flex-col justify-center">
             <h2 className="font-bold">{key + ":"}</h2>
             <input className="text-black border-2 border-gray-300 rounded-lg w-1/2 p-2 m-2"
               type="text"
@@ -82,8 +82,8 @@ const Page = () => {
                 <span className="text-red-500 font-bold">Modified</span>
               ) : null }
           </div>)
-})}
-        <button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        })}
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type='button'
           onClick={() => {
             const element = document.createElement("a");
             const file = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
