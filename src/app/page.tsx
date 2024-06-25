@@ -37,6 +37,7 @@ const Page = () => {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <h1 className="text-3xl font-bold">Import your json file</h1>
+      <br />
       <input type="file" accept=".json" onChange={handleFileChange} />
       <div>
         {Object.keys(jsonData).map((key) => {
@@ -83,6 +84,7 @@ const Page = () => {
               ) : null }
           </div>)
         })}
+        <br />
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type='button'
           onClick={() => {
             const element = document.createElement("a");
